@@ -49,21 +49,13 @@ export class HealthService {
   }
 
   // Start periodic health checks
-  startHealthMonitoring(intervalMs = 30000) {
+  startHealthMonitoring(intervalMs = 5000) {
     if (this.healthCheckInterval) {
       console.warn('Health monitoring already active');
       return;
     }
 
-    // Initial check (silent on failure — DensePose API may not be running)
-    this.getSystemHealth().catch(() => {
-      // DensePose API not running — sensing-only mode, skip polling
-      this._backendUnavailable = true;
-    });
-
-    // Set up periodic checks only if backend was reachable
-    this.healthCheckInterval = setInterval(() => {
-      if (this._backendUnavailable) return;
+    const doCheck = () => {
       this.getSystemHealth().catch(error => {
         this.notifySubscribers({
           status: 'error',
@@ -71,7 +63,13 @@ export class HealthService {
           timestamp: new Date().toISOString()
         });
       });
-    }, intervalMs);
+    };
+
+    // Initial check
+    doCheck();
+
+    // Periodic checks — always retry even if a previous check failed
+    this.healthCheckInterval = setInterval(doCheck, intervalMs);
   }
 
   // Stop health monitoring

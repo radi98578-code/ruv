@@ -81,7 +81,7 @@ export class DashboardTab {
     }, 5000);
 
     // Start health monitoring
-    healthService.startHealthMonitoring(30000);
+    healthService.startHealthMonitoring(5000);
   }
 
   // Update the data source indicator on the dashboard
