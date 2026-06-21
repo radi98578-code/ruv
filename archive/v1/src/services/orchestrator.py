@@ -10,13 +10,6 @@ from contextlib import asynccontextmanager
 from src.config.settings import Settings
 from src.services.health_check import HealthCheckService
 from src.services.metrics import MetricsService
-from src.api.dependencies import (
-    get_hardware_service,
-    get_pose_service,
-    get_stream_service
-)
-from src.api.websocket.connection_manager import connection_manager
-from src.api.websocket.pose_stream import PoseStreamHandler
 
 logger = logging.getLogger(__name__)
 
@@ -58,6 +51,7 @@ class ServiceOrchestrator:
             await self._initialize_application_services()
             
             # Store services in registry
+            from src.api.websocket.connection_manager import connection_manager
             self._services = {
                 'health': self.health_service,
                 'metrics': self.metrics_service,
@@ -78,6 +72,13 @@ class ServiceOrchestrator:
     
     async def _initialize_application_services(self):
         """Initialize application-specific services."""
+        from src.api.dependencies import (
+            get_hardware_service,
+            get_pose_service,
+            get_stream_service,
+        )
+        from src.api.websocket.connection_manager import connection_manager
+        from src.api.websocket.pose_stream import PoseStreamHandler
         try:
             # Initialize hardware service
             self.hardware_service = get_hardware_service()
@@ -212,6 +213,7 @@ class ServiceOrchestrator:
     
     async def shutdown(self):
         """Shutdown all services and cleanup resources."""
+        from src.api.websocket.connection_manager import connection_manager
         logger.info("Shutting down services...")
         
         try:
@@ -309,6 +311,7 @@ class ServiceOrchestrator:
                 await self.stream_service.reset()
             
             # Reset connection manager
+            from src.api.websocket.connection_manager import connection_manager
             await connection_manager.reset()
             
             logger.info("All services reset successfully")

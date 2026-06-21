@@ -12,7 +12,12 @@ from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
 
 import numpy as np
-import torch
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    torch = None
+    TORCH_AVAILABLE = False
 
 from src.config.settings import Settings
 from src.config.domains import DomainConfig
@@ -140,6 +145,8 @@ class PoseService:
             self.densepose_model.eval()
             self.modality_translator.eval()
             
+        except ImportError as e:
+            self.logger.warning(f"Neural models unavailable (torch not installed): {e}. Running without pose inference.")
         except Exception as e:
             self.logger.error(f"Failed to initialize models: {e}")
             raise

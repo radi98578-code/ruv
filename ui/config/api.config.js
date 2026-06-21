@@ -1,10 +1,13 @@
 // API Configuration for WiFi-DensePose UI
 
-// Auto-detect the backend URL from the page origin so the UI works whether
-// served from Docker (:3000), local dev (:8080), or any other port.
-const _origin = (typeof window !== 'undefined' && window.location && window.location.origin)
-  ? window.location.origin
-  : 'http://localhost:3000';
+// Auto-detect the backend URL from the page origin.
+// In local dev the UI is served from :3000 but the API runs on :8000.
+const _UI_TO_API_PORT = { '3000': '8000', '8080': '8080' };
+const _pagePort = (typeof window !== 'undefined' && window.location && window.location.port) ? window.location.port : '3000';
+const _apiPort = _UI_TO_API_PORT[_pagePort] || _pagePort;
+const _hostname = (typeof window !== 'undefined' && window.location && window.location.hostname) ? window.location.hostname : 'localhost';
+const _protocol = (typeof window !== 'undefined' && window.location && window.location.protocol) ? window.location.protocol : 'http:';
+const _origin = `${_protocol}//${_hostname}:${_apiPort}`;
 
 export const API_CONFIG = {
   BASE_URL: _origin,
@@ -113,16 +116,14 @@ export function buildApiUrl(endpoint, params = {}) {
 
 // Helper function to build WebSocket URLs
 export function buildWsUrl(endpoint, params = {}) {
-  // Match WebSocket protocol to page protocol: https → wss, http → ws.
-  // Previous logic forced wss:// on non-localhost HTTP, breaking LAN/Docker
-  // deployments served over plain HTTP. See issue #272.
-  const isSecure = window.location.protocol === 'https:';
+  // Match WebSocket protocol to API base URL protocol.
+  const isSecure = API_CONFIG.BASE_URL.startsWith('https:');
   const protocol = isSecure
     ? API_CONFIG.WSS_PREFIX
     : API_CONFIG.WS_PREFIX;
 
-  // Derive host from the page origin so it works on any port (Docker :3000, dev :8080, etc.)
-  const host = window.location.host;
+  // Derive host from API_CONFIG.BASE_URL (not page origin) so dev port mapping works.
+  const host = new URL(API_CONFIG.BASE_URL).host;
   let url = `${protocol}${host}${endpoint}`;
   
   // Add query parameters

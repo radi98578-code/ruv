@@ -122,7 +122,7 @@ export class LiveDemoTab {
       const tryAutoStart = () => {
         if (this._autoStartOnce || this.state.isActive) return;
         const ds = sensingService.dataSource;
-        if (ds === 'live' || ds === 'server-simulated') {
+        if (ds === 'live' || ds === 'server-simulated' || ds === 'simulated') {
           this._autoStartOnce = true;
           this.logger.info('Auto-starting pose detection (data source: ' + ds + ')');
           this.startDemo();
