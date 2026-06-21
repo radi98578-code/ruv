@@ -21,22 +21,22 @@ pose estimation), CSI-capable hardware and the full DensePose pipeline
 are required.
 """
 
-from v1.src.sensing.rssi_collector import (
+from .rssi_collector import (
     LinuxWifiCollector,
     SimulatedCollector,
     WindowsWifiCollector,
     WifiSample,
 )
-from v1.src.sensing.feature_extractor import (
+from .feature_extractor import (
     RssiFeatureExtractor,
     RssiFeatures,
 )
-from v1.src.sensing.classifier import (
+from .classifier import (
     PresenceClassifier,
     SensingResult,
     MotionLevel,
 )
-from v1.src.sensing.backend import (
+from .backend import (
     SensingBackend,
     CommodityBackend,
     Capability,

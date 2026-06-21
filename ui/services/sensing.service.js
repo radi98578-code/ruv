@@ -78,6 +78,18 @@ class SensingService {
     this._setState('disconnected');
   }
 
+  /** Force an immediate reconnect, resetting the attempt counter. */
+  reconnect() {
+    this._clearTimers();
+    if (this._ws) {
+      this._ws.close(1000, 'manual reconnect');
+      this._ws = null;
+    }
+    this._reconnectAttempt = 0;
+    this._stopSimulation();
+    this._connect();
+  }
+
   /** Register a callback for sensing data updates. Returns unsubscribe fn. */
   onData(callback) {
     this._listeners.add(callback);

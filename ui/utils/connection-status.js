@@ -58,6 +58,8 @@ export class ConnectionStatus {
       this.setStatus('connected', label);
     } else if (state === 'connecting' || state === 'reconnecting') {
       this.setStatus('reconnecting', 'Connecting...');
+    } else if (state === 'simulated') {
+      this.setStatus('disconnected', 'Simulated');
     } else if (state === 'error') {
       this.setStatus('error', 'Error');
     } else {

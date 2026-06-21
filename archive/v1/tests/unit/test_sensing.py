@@ -18,23 +18,23 @@ import numpy as np
 import pytest
 from numpy.typing import NDArray
 
-from v1.src.sensing.rssi_collector import (
+from src.sensing.rssi_collector import (
     RingBuffer,
     SimulatedCollector,
     WifiSample,
 )
-from v1.src.sensing.feature_extractor import (
+from src.sensing.feature_extractor import (
     RssiFeatureExtractor,
     RssiFeatures,
     cusum_detect,
     _band_power,
 )
-from v1.src.sensing.classifier import (
+from src.sensing.classifier import (
     MotionLevel,
     PresenceClassifier,
     SensingResult,
 )
-from v1.src.sensing.backend import (
+from src.sensing.backend import (
     Capability,
     CommodityBackend,
     SensingBackend,
@@ -709,7 +709,7 @@ class TestBandPower:
 # ===========================================================================
 
 from unittest.mock import patch, mock_open
-from v1.src.sensing.rssi_collector import LinuxWifiCollector, create_collector
+from src.sensing.rssi_collector import LinuxWifiCollector, create_collector
 
 
 class TestLinuxWifiCollectorAvailability:

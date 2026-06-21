@@ -18,7 +18,7 @@ from dataclasses import dataclass
 from enum import Enum
 from typing import List, Optional
 
-from v1.src.sensing.feature_extractor import RssiFeatures
+from .feature_extractor import RssiFeatures
 
 logger = logging.getLogger(__name__)
 

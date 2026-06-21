@@ -36,12 +36,12 @@ from typing import Dict, List, Optional, Set
 import numpy as np
 
 # Sensing pipeline imports
-from v1.src.sensing.rssi_collector import (
+from .rssi_collector import (
     WifiSample,
     RingBuffer,
 )
-from v1.src.sensing.feature_extractor import RssiFeatureExtractor, RssiFeatures
-from v1.src.sensing.classifier import MotionLevel, PresenceClassifier, SensingResult
+from .feature_extractor import RssiFeatureExtractor, RssiFeatures
+from .classifier import MotionLevel, PresenceClassifier, SensingResult
 
 logger = logging.getLogger(__name__)
 

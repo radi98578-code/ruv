@@ -454,8 +454,8 @@ class DatabaseManager:
             "redis": {}
         }
         
-        # PostgreSQL stats
-        if self._async_engine:
+        # PostgreSQL stats (NullPool used for SQLite has no size/checkedout methods)
+        if self._async_engine and not self.is_using_sqlite_fallback():
             pool = self._async_engine.pool
             stats["postgresql"] = {
                 "pool_size": pool.size(),

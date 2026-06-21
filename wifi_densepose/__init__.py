@@ -19,7 +19,7 @@ import logging
 logger = logging.getLogger(__name__)
 
 # Allow importing the v1 src package when installed from the repo
-_v1_src = os.path.join(os.path.dirname(os.path.dirname(__file__)), "v1")
+_v1_src = os.path.join(os.path.dirname(os.path.dirname(__file__)), "archive", "v1")
 if os.path.isdir(_v1_src) and _v1_src not in sys.path:
     sys.path.insert(0, _v1_src)
 

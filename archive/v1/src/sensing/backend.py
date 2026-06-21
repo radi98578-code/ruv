@@ -15,9 +15,9 @@ import logging
 from enum import Enum, auto
 from typing import List, Optional, Protocol, Set, runtime_checkable
 
-from v1.src.sensing.classifier import MotionLevel, PresenceClassifier, SensingResult
-from v1.src.sensing.feature_extractor import RssiFeatureExtractor, RssiFeatures
-from v1.src.sensing.rssi_collector import (
+from .classifier import MotionLevel, PresenceClassifier, SensingResult
+from .feature_extractor import RssiFeatureExtractor, RssiFeatures
+from .rssi_collector import (
     LinuxWifiCollector,
     SimulatedCollector,
     WindowsWifiCollector,
